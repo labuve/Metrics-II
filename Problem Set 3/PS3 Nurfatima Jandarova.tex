@@ -1,0 +1,234 @@
+\documentclass[]{article}
+\usepackage{amsmath, amsfonts}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{cancel}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{dcolumn}
+\usepackage{mathtools}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{cleveref}
+
+%opening
+\title{Problem Set III \\ \large Econometrics II}
+\author{Nurfatima Jandarova}
+\date{\today}
+\pagestyle{fancy}
+
+\lhead{Econometrics II, Problem Set III}
+\rhead{Nurfatima Jandarova}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyheadoffset{1 cm}
+
+\geometry{a4paper, left=30mm, top=30mm, bottom = 20mm, headheight=20mm}
+
+\sloppy
+\definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Exercise 1}
+\begin{enumerate}[label=(\alph*)]
+	\item Recall that OLS estimators are computed as
+	\begin{equation}
+	\begin{split}
+	\begin{bmatrix}
+	\hat{\mu}_0 \\ \hat{\mu}_1
+	\end{bmatrix}& = \begin{bmatrix}\sum\limits_{t = 1}^n1 & \sum\limits_{t = 1}^nt \\ \sum\limits_{t = 1}^nt & \sum\limits_{t = 1}^nt^2
+	\end{bmatrix}^{-1}\begin{bmatrix}\sum\limits_{t = 1}^nY_t \\ \sum\limits_{t = 1}^ntY_t\end{bmatrix} = \begin{bmatrix}
+	\mu_0 \\ \mu_1\end{bmatrix} + \begin{bmatrix}n & \sum\limits_{t = 1}^nt \\ \sum\limits_{t = 1}^nt & \sum\limits_{t = 1}^nt^2\end{bmatrix}^{-1}\begin{bmatrix}\sum\limits_{t = 1}^n\varepsilon_t \\ \sum\limits_{t = 1}^nt\varepsilon_t\end{bmatrix}
+	\end{split}
+	\label{eq:ex1OLS}
+	\end{equation}
+	Pre-multiply \eqref{eq:ex1OLS} by $B = \begin{bmatrix}\sqrt{n} & 0 \\ 0 & n^{\frac{3}{2}}\end{bmatrix}$:
+	\begin{equation}
+	\begin{split}
+	B\begin{bmatrix}\hat{\mu}_0 - \mu_0 \\ \hat{\mu}_1 - \mu_1\end{bmatrix}& = B\begin{bmatrix}n & \sum\limits_{t = 1}^nt \\ \sum\limits_{t = 1}^nt & \sum\limits_{t = 1}^nt^2\end{bmatrix}^{-1}\begin{bmatrix}\sum\limits_{t = 1}^n\varepsilon_t \\ \sum\limits_{t = 1}^nt\varepsilon_t\end{bmatrix} = B\begin{bmatrix}n & \sum\limits_{t = 1}^nt \\ \sum\limits_{t = 1}^nt & \sum\limits_{t = 1}^nt^2\end{bmatrix}^{-1}BB^{-1}\begin{bmatrix}\sum\limits_{t = 1}^n\varepsilon_t \\ \sum\limits_{t = 1}^nt\varepsilon_t\end{bmatrix} \nonumber \\
+	& = \begin{bmatrix}
+	B^{-1}\begin{pmatrix}n & \sum\limits_{t = 1}^nt \\ \sum\limits_{t = 1}^nt & \sum\limits_{t = 1}^nt^2\end{pmatrix}B^{-1}\end{bmatrix}^{-1} B^{-1}\begin{bmatrix}\sum\limits_{t = 1}^n\varepsilon_t \\ \sum\limits_{t = 1}^nt\varepsilon_t\end{bmatrix}
+	\end{split}
+	\end{equation}
+	Notice that $B^{-1} = \frac{1}{n^2}\begin{bmatrix}n^{\frac{3}{2}} & 0 \\ 0 & \sqrt{n}\end{bmatrix} = \begin{bmatrix}\frac{1}{\sqrt{n}} & 0 \\ 0 & \frac{1}{n^{\frac{3}{2}}}\end{bmatrix}$. Hence,
+	\begin{equation}
+	B^{-1}\begin{pmatrix}n & \sum\limits_{t = 1}^nt \\ \sum\limits_{t = 1}^nt & \sum\limits_{t = 1}^nt^2\end{pmatrix}B^{-1} = \begin{bmatrix}1 & \frac{1}{n^2}\sum\limits_{t = 1}^nt \\ \frac{1}{n^2}\sum\limits_{t = 1}^nt & \frac{1}{n^3}\sum\limits_{t = 1}^nt^2\end{bmatrix}\nonumber
+	\end{equation}
+	
+	Claim: $\frac{1}{n^{k+1}}\sum\limits_{t = 1}^nt^k \longrightarrow \frac{1}{k+1}$. Proof: Rewrite $\frac{1}{n^{k+1}}\sum\limits_{t = 1}^nt^k = \frac{1}{n}\sum\limits_{t = 1}^n(\frac{t}{n})^k$. Notice that $\frac{1}{n}(\frac{t}{n})^k$ represents an area under the rectangle with width $\frac{1}{n}$ and height $(\frac{t}{n})^k$. Similar to what we've done in the class, the sum of the areas under this step function converges to the integral
+	\begin{equation}
+		\frac{1}{n}\sum\limits_{t = 1}^n\begin{pmatrix}\frac{t}{n}\end{pmatrix}^k \longrightarrow \int_{0}^{1}\begin{pmatrix}\frac{t}{n}\end{pmatrix}^k d\begin{pmatrix}\frac{t}{n}\end{pmatrix} = \frac{1}{k + 1}\begin{pmatrix}\frac{t}{n}\end{pmatrix}^{k+1}\bigg\rvert_{\frac{t}{n} = 0}^1 = \frac{1}{k + 1} \nonumber
+	\end{equation}
+	Therefore, 
+	\begin{equation}
+		\begin{bmatrix}1 & \frac{1}{n^2}\sum\limits_{t = 1}^nt \\ \frac{1}{n^2}\sum\limits_{t = 1}^nt & \frac{1}{n^3}\sum\limits_{t = 1}^nt^2\end{bmatrix}\underset{n\to\infty}{\longrightarrow} \begin{bmatrix}1 & \frac{1}{2} \\ \frac{1}{2} & \frac{1}{3}\end{bmatrix} \nonumber
+	\end{equation}
+	
+	
+	Next,
+	\begin{equation}
+	\begin{split}
+	B^{-1}\begin{bmatrix}\sum\limits_{t = 1}^n\varepsilon_t \\ \sum\limits_{t = 1}^nt\varepsilon_t\end{bmatrix} = \begin{bmatrix}\frac{1}{\sqrt{n}}\sum\limits_{t = 1}^n\varepsilon_t \\ \frac{1}{n^{\frac{3}{2}}}\sum\limits_{t = 1}^nt\varepsilon_t\end{bmatrix} \nonumber
+	\end{split}
+	\end{equation}
+	From FCLT, we know that $\frac{1}{\sqrt{n}}\sum\limits_{t = 1}^n\varepsilon_t \overset{L_2}{\Longrightarrow} \sigma_\varepsilon W(1) \sim \mathcal{N}(0, \sigma_\varepsilon^2)$. 
+	
+	Next, observe that $\frac{1}{n^{\frac{3}{2}}}\sum\limits_{t = 1}^nt\varepsilon_t$ could be rewritten as $\frac{1}{\sqrt{n}}\sum\limits_{t = 1}^n(\frac{t}{n})\varepsilon_t$ and that $(\frac{t}{n})\varepsilon_t$ is a martingale difference process with finite variance:
+	\begin{equation}
+		\begin{split}
+			\mathbb{E}[(\frac{t}{n})^2\varepsilon_t^2] = (\frac{t}{n})^2\sigma_\varepsilon^2 \nonumber
+			\text{ and }
+			\frac{1}{n}\sum\limits_{t = 1}^n(\frac{t}{n})^2\sigma_\varepsilon^2 \longrightarrow \frac{\sigma_\varepsilon^2}{3}
+		\end{split}
+	\end{equation}
+	Hence, by CLT for martingale differences,
+	\begin{equation}
+		\frac{1}{\sqrt{n}}\sum\limits_{t = 1}^n(\frac{t}{n})\varepsilon_t \overset{L_2}{\Longrightarrow} \mathcal{N}(0, \frac{\sigma_\varepsilon^2}{3}) \nonumber
+	\end{equation}
+	
+	For the joint distribution of $\frac{1}{\sqrt{n}}\begin{bmatrix}\sum\limits_{t = 1}^n\varepsilon_t \\ \sum\limits_{t = 1}^n(\frac{t}{n})\varepsilon_t\end{bmatrix}$ observe that the limiting distributions of both elements separately is normal. Furthermore, any linear combination of these two elements could be expressed as yet another function of martingale difference process
+	\begin{equation}
+		\begin{split}
+			&\frac{1}{\sqrt{n}}\sum\limits_{t = 1}^n(\alpha_1 + \alpha_2\begin{pmatrix}\frac{t}{n}\end{pmatrix})\varepsilon_t \nonumber \intertext{whose variane satisfies}
+			&\mathbb{E}(\alpha_1 + \alpha_2\begin{pmatrix}\frac{t}{n}\end{pmatrix})^2\varepsilon_t^2 = \begin{pmatrix}\alpha_1^2 + 2\alpha_1\alpha_2\begin{pmatrix}\frac{t}{n}\end{pmatrix} + \alpha_2^2\begin{pmatrix}\frac{t}{n}\end{pmatrix}^2\end{pmatrix}\sigma_\varepsilon^2 \\
+			&\frac{1}{n}\sum\limits_{t = 1}^n\begin{pmatrix}\alpha_1^2 + 2\alpha_1\alpha_2\begin{pmatrix}\frac{t}{n}\end{pmatrix} + \alpha_2^2\begin{pmatrix}\frac{t}{n}\end{pmatrix}^2\end{pmatrix}\sigma_\varepsilon^2 \longrightarrow \begin{pmatrix}\alpha_1^2 + 2\alpha_1\alpha_2\frac{1}{2} + \alpha_2^2\frac{1}{3}\end{pmatrix}\sigma_\varepsilon^2 = \begin{bmatrix}\alpha_1 & \alpha_2\end{bmatrix}\begin{bmatrix}1 & \frac{1}{2} \\ \frac{1}{2} & \frac{1}{3}\end{bmatrix}\begin{bmatrix}\alpha_1 \\ \alpha_2\end{bmatrix}\sigma_\varepsilon^2
+			\intertext{Hence, }
+			&\frac{1}{\sqrt{n}}\begin{bmatrix}\sum\limits_{t = 1}^n\varepsilon_t \\ \sum\limits_{t = 1}^n(\frac{t}{n})\varepsilon_t\end{bmatrix} \overset{L_2}{\Longrightarrow}\mathcal{N}\begin{pmatrix}\begin{bmatrix}0 \\ 0\end{bmatrix}, \begin{bmatrix}1 & \frac{1}{2} \\ \frac{1}{2} & \frac{1}{3}\end{bmatrix}\sigma_\varepsilon^2\end{pmatrix}
+		\end{split}
+	\end{equation}
+	Combining the results and using Slutsky's theorem we can provide a limiting distribution for the OLS estimators:
+	\begin{equation}
+		\begin{bmatrix}\sqrt{n}(\hat{\mu}_0 - \mu_0) \\ n^{\frac{3}{2}}(\hat{\mu}_1 - \mu_1)\end{bmatrix} \overset{L_2}{\Longrightarrow} \mathcal{N}\begin{pmatrix}\begin{bmatrix}0\\0\end{bmatrix}, \sigma_\varepsilon^2\begin{bmatrix}1 & \frac{1}{2} \\ \frac{1}{2} & \frac{1}{3}\end{bmatrix}^{-1}\end{pmatrix} \nonumber
+	\end{equation}
+	
+	\item Rewrite the estimator as
+	\begin{equation}
+		\begin{split}
+		\hat{\mu}_k - \mu_k& = \frac{\sum\limits_{t = 1}^nt^k\varepsilon_t}{\sum\limits_{t = 1}^nt^{2k}} \Longrightarrow
+		n^{k + \frac{1}{2}}(\hat{\mu}_k - \mu_k) = \frac{\frac{1}{n^{k + \frac{1}{2}}}\sum\limits_{t = 1}^nt^k\varepsilon_t}{\frac{1}{n^{2k + 1}}\sum\limits_{t = 1}^n t^{2k}} \nonumber
+		\end{split}
+	\end{equation}
+	Using the results from the previous part, we know that $\frac{1}{n^{2k + 1}}\sum\limits_{t = 1}^n t^{2k} \overset{L_2}{\Longrightarrow} \frac{1}{2k + 1}$. For the numerator observe that as in previous part $(\frac{t}{n})^k\varepsilon_t$ is a martingale difference process with variance satisfying
+	\begin{equation}
+		\begin{split}
+			\mathbb{E}\begin{bmatrix}(\frac{t}{n})^{2k}\varepsilon_t^2\end{bmatrix}& = (\frac{t}{n})^{2k}\sigma_\varepsilon^2 \\ \nonumber
+			\frac{1}{n}\sum\limits_{t = 1}^n(\frac{t}{n})^{2k}\sigma_\varepsilon^2& \longrightarrow \frac{\sigma_\varepsilon^2}{2k + 1}
+			\intertext{Therefore, applying the CLT for martingale differences we get}
+			\frac{1}{\sqrt{n}}\sum\limits_{t = 1}^n(\frac{t}{n})^k\varepsilon_t& \overset{L_2}{\Longrightarrow} \mathcal{N}(0, \frac{\sigma_\varepsilon^2}{2k + 1})
+			\intertext{Finally, applying CMT we get the limiting distribution for the estimator}
+			n^{k + \frac{1}{2}}(\hat{\mu}_k - \mu_k)& \overset{L_2}{\Longrightarrow} \mathcal{N}(0, \sigma_\varepsilon^2(2k+1))
+		\end{split}
+	\end{equation} 
+	
+\end{enumerate}
+
+
+\subsection*{Exercise 3}
+
+\begin{enumerate}[label = \alph*)]
+	\item Define a stochastic function $X_n(r)$ as
+	\begin{equation}
+		X_n(r) = \begin{cases}0 & \text{ if }0\leq r<\frac{1}{n} \\
+		\frac{\varepsilon_1}{n} = \frac{Y_1}{n} & \text{ if }\frac{1}{n}\leq r<\frac{2}{n} \\
+		\frac{\varepsilon_1 + \varepsilon_2}{n} = \frac{Y_2}{n} & \text{ if }\frac{2}{n}\leq r<\frac{3}{n} \\
+		\qquad\vdots\\
+		\frac{\varepsilon_1 + ... + \varepsilon_n}{n} = \frac{Y_n}{n} & \text{ if }r = 1
+		\end{cases}\nonumber
+	\end{equation}
+	Then, the area under this step function could be written as
+	\begin{equation}
+		\int_{0}^{1}\sqrt{n}X_n(r)dr = \frac{Y_1}{n^\frac{3}{2}} + ... + \frac{Y_n}{n^\frac{3}{2}} = \frac{1}{n^\frac{3}{2}}\sum\limits_{t = 1}^nY_t \nonumber
+	\end{equation}
+	Notice that $\sqrt{n}X_n(r) = \frac{1}{\sqrt{n}}\sum\limits_{t = 1}^{\floor*{nr}}\varepsilon_t = \frac{\sqrt{\floor*{nr}}}{\sqrt{n}}\frac{1}{\sqrt{\floor*{nr}}}\sum\limits_{t = 1}^{\floor*{nr}}\varepsilon_t$, which by Functional Central Limit Theorem (FCLT) we know converges in distribution:
+	\begin{equation}
+		\sqrt{n}X_n(r) \overset{L_2}{\Longrightarrow} \sigma_\varepsilon W(r) \nonumber
+	\end{equation}
+	where $W(\cdot)$ is a Brownian motion.
+	Hence, by Continuous Mapping Theorem (CMT) $\int_{0}^{1}\sqrt{n}X_n(r)dr = \frac{1}{n^\frac{3}{2}}\sum\limits_{t = 1}^nY_t \overset{L_2}{\Longrightarrow} \int_{0}^{1}\sigma_\varepsilon W(r)dr$.
+	
+	\item Rewrite the expressions as
+	\begin{equation}
+		\begin{split}
+			\frac{1}{n}\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)\varepsilon_t& = \frac{1}{n}\sum\limits_{t = 1}^nY_{t-1}\varepsilon_t - \bar{Y}_1\frac{1}{n}\sum\limits_{t = 1}^n\varepsilon_t = \frac{1}{n}\sum\limits_{t = 1}^nY_{t-1}\varepsilon_t - \begin{pmatrix}\frac{1}{n^{\frac{3}{2}}}\sum\limits_{t = 1}^nY_{t-1}\end{pmatrix}\begin{pmatrix}\frac{1}{\sqrt{n}}\sum\limits_{t = 1}^n\varepsilon_t\end{pmatrix}\\ \nonumber
+			\frac{1}{n^2}\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)^2& = \frac{1}{n^2}\sum\limits_{t = 1}^nY_{t-1}^2 - 2\frac{1}{n}\bar{Y}_1^2 + \frac{1}{n}\bar{Y}_1^2 = \frac{1}{n^2}\sum\limits_{t = 1}^nY_{t-1}^2 - \begin{pmatrix}\frac{1}{n^{\frac{3}{2}}}\sum\limits_{t = 1}^nY_{t-1}\end{pmatrix}^2
+		\end{split}
+	\end{equation}
+	As derived in the first part of this exercise, $\frac{1}{n^{\frac{3}{2}}}\sum\limits_{t = 1}^nY_{t-1} \overset{L_2}{\Longrightarrow}\int_{0}^{1}\sigma_\varepsilon W(r)dr$. Notice as well that $\frac{1}{n^2}\sum\limits_{t = 1}^nY_{t-1}^2 = \int_{0}^{1}n(X_n(r))^2dr \overset{L_2}{\Longrightarrow}\sigma_\varepsilon^2\int_{0}^{1}(W(r))^2dr$. According to the derivation in class, $\frac{1}{n}\sum\limits_{t = 1}^nY_{t-1}\varepsilon_t \overset{L_2}{\Longrightarrow}\frac{1}{2}\sigma_\varepsilon^2\begin{bmatrix}(W(1))^2 - 1\end{bmatrix}$. Furthermore, $\frac{1}{\sqrt{n}}\sum\limits_{t = 1}^n\varepsilon_t = \sqrt{n}X_n(1) \overset{L_2}{\Longrightarrow}\sigma_\varepsilon W(1)$. Hence, by CMT:
+	\begin{equation}
+	\begin{split}
+	\frac{1}{n}\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)\varepsilon_t& \overset{L_2}{\Longrightarrow} \frac{1}{2}\sigma_\varepsilon^2\begin{bmatrix}(W(1))^2 - 1\end{bmatrix} - \sigma_\varepsilon^2W(1)\int_{0}^{1}W(r)dr\\ \nonumber
+	\frac{1}{n^2}\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)^2& \overset{L_2}{\Longrightarrow} \sigma_\varepsilon^2\int_{0}^{1}(W(r))^2dr - \sigma_\varepsilon^2\begin{bmatrix}\int_{0}^{1}W(r)dr\end{bmatrix}^2
+	\end{split}
+	\end{equation}
+	For the asymptotic distribution of the OLS estimator, rewrite the expression
+	\begin{equation}
+		\hat{\varphi}_n = \frac{\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)(Y_{t-1} - \varepsilon_t)}{\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)^2} = 1 + \frac{\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)\varepsilon_t}{\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)^2} \nonumber
+	\end{equation}
+	Notice that we have found limiting distributions of both the scaled numerator and scaled denominator. Hence, by continuous mapping theorem:
+	\begin{equation}
+		n(\hat{\varphi}_n - 1) = \frac{\frac{1}{n}\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)\varepsilon_t}{\frac{1}{n^2}\sum\limits_{t = 1}^n(Y_{t-1} - \bar{Y}_1)^2} \overset{L_2}{\Longrightarrow} \frac{\frac{1}{2}\begin{bmatrix}(W(1))^2 - 1\end{bmatrix} - W(1)\int_{0}^{1}W(r)dr}{\int_{0}^{1}(W(r))^2dr - \begin{bmatrix}\int_{0}^{1}W(r)dr\end{bmatrix}^2} \nonumber
+	\end{equation}
+\end{enumerate}
+
+\subsection*{Exercise 4}
+
+We have generated the data such that one is independent of the other. Hence, by common sense one would anticipate that the regression of these two variables should yield a zero coefficient. However, both of the series were generated according to a random walk process. Therefore, running the regression of one on the other results in a spurious regression. In other words, regression coefficients are statistically significant, as shown in \Cref{fig:ols} and \Cref{fig:t}. Although estimators are centred around 0, there is a large likelihood of getting highly statistically significant t-stat (way above 'rule-of-thumb' level of 2). As yet another indication of a spurious regression, the Durbin-Watson statistics is extremely low.
+
+Notice as well the differences across sample sizes. Although it is difficult to see the differences in the distribution of OLS estimator, the distribution of t-statistics became markedly wider as we increased the sample size. That is, the larger the sample size, the more likely that a spurious regression will report coefficients statistically different from zero. Recall from theory that in case of a unit root estimators converge at a faster rate ($n^{\frac{3}{2}}$ instead of $\sqrt{n}$). Therefore, not surprisingly, as sample size grew, the variance of an estimator shrank, evidenced from exploding t-stat. In addition, as the sample size gets larger, the DW statistic approaches zero.
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width = \linewidth]{fig1.eps}
+		\caption{$n = 100$}
+		\label{fig:ols100}
+	\end{subfigure}%
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width = \linewidth]{fig4.eps}
+		\caption{$n = 500$}
+		\label{fig:ols500}
+	\end{subfigure}
+	\caption{Distribution of OLS estimators with different sample sizes}
+	\label{fig:ols}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width = \linewidth]{fig2.eps}
+		\caption{$n = 100$}
+		\label{fig:t100}
+	\end{subfigure}%
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width = \linewidth]{fig5.eps}
+		\caption{$n = 500$}
+		\label{fig:t500}
+	\end{subfigure}
+	\caption{Distribution of t-statistics with different sample sizes}
+	\label{fig:t}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width = \linewidth]{fig3.eps}
+		\caption{$n = 100$}
+		\label{fig:dw100}
+	\end{subfigure}%
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width = \linewidth]{fig6.eps}
+		\caption{$n = 500$}
+		\label{fig:dw500}
+	\end{subfigure}
+	\caption{Distribution of Durbin-Watson statistics with different sample sizes}
+	\label{fig:dw}
+\end{figure}
+
+\end{document}

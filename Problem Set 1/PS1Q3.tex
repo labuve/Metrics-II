@@ -1,0 +1,218 @@
+\documentclass[]{article}
+\usepackage{amsmath, amsfonts}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{cancel}
+\usepackage{graphicx}
+\usepackage{color}
+
+%opening
+\title{Problem Set I \\ \large Econometrics II}
+\author{Nurfatima Jandarova}
+\date{\today}
+\pagestyle{fancy}
+
+\lhead{Econometrics II, Problem Set I}
+\rhead{Nurfatima Jandarova}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyheadoffset{1 cm}
+
+\geometry{a4paper, left=20mm, top=20mm, bottom = 20mm, headheight=20mm}
+
+\sloppy
+\definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Exercise 3}
+\begin{enumerate}[label=\alph*)]
+	\item Since we are given that the process only depends on the most recent realization of itself, conditioning on natural filtration is equivalent to conditioning on the previous period's value. With this in mind, let's compute conditional expectation of the process:
+	\begin{equation}
+		\begin{split}
+		&\mathbb{E}(X_t|X_{t-1}=1)=P(X_t=1|X_{t-1}=1)-P(X_t=-1|X_{t-1}=1)=p-(1-p)=2p-1\\ \nonumber
+		&\mathbb{E}(X_t|X_{t-1}=-1)=P(X_t=1|X_{t-1}=-1)-1P(X_t=-1|X_{t-1}=-1)=1-q-q=1-2q \nonumber
+		\end{split}
+	\end{equation}
+	Hence, $\{X_t\}_{t=0}^{\infty}$ is a martingale difference sequence if $p=q=\frac{1}{2}$.
+	
+	\item Solve the following for $\lambda_{p,q}$:
+	\begin{equation}
+		\begin{split}
+		P(X_t=1)& = P(X_t=1|X_{t-1}=1)P(X_{t-1}=1) + P(X_t=1|X_{t-1}=-1)P(X_{t-1}=-1) \\ \nonumber
+		\lambda_{p,q}& = p\lambda_{p,q} + (1-q)(1-\lambda_{p,q}) \\
+		\lambda_{p,q}& = \frac{1-q}{1-p+1-q}
+		\end{split}
+	\end{equation}
+	
+	\item First of all, notice that when $P(X_0=1)=\lambda_{p,q}$, $P(X_t=1)=\lambda_{p,q}, \forall t\geq0$:
+	\begin{equation}
+	\begin{split}
+		\begin{bmatrix}
+		P(X_1=1) & P(X_1=-1)
+		\end{bmatrix}&=\begin{bmatrix}
+		\frac{1-q}{1-q+1-p} & \frac{1-p}{1-q+1-p}
+		\end{bmatrix}\begin{bmatrix}
+		p & 1-p \\ 1-q & q
+		\end{bmatrix}\\
+		& = \begin{bmatrix}
+		\frac{p(1-q)}{1-q+1-p}+\frac{(1-p)(1-q)}{1-p+1-q} & \frac{(1-p)(1-q)}{1-p+1-q}+\frac{(1-p)q}{1-p+1-q}
+		\end{bmatrix}\\
+		& = \begin{bmatrix}
+		\frac{1-q}{1-p+1-q} & \frac{1-p}{1-q+1-p}
+		\end{bmatrix} \\ \nonumber
+		\text{Notice that for }t=2\text{ the computation}&\text{ of unconditional probabilities is the same. Thus, } \forall t>0\\
+		\begin{bmatrix}
+		P(X_t=1) & P(X_t=-1)
+		\end{bmatrix}&=\begin{bmatrix}
+		\frac{1-q}{1-p+1-q} & \frac{1-p}{1-q+1-p}
+		\end{bmatrix}
+		\end{split}
+	\end{equation}
+	Given $p=q$, we also have that $\lambda_{p,q}=\frac{1}{2}$. Hence, $\mathbb{E}(X_t)=P(X_t=1)-P(X_t=-1)=\frac{1}{2}-\frac{1}{2}=0, \forall t \geq 0$.
+	
+	\item Compute $\mathbb{E}(X_{t+k}|X_t=1)$ and $\mathbb{E}(X_{t+k}|X_t=-1)$
+	\begin{equation}
+	\begin{split}
+		\mathbb{E}(X_{t+k}|X_t=1)& = P(X_{t+k}=1|X_t=1) - P(X_{t+k}=-1|X_t=1)\\ \nonumber
+		& = \frac{1}{2}\begin{bmatrix}1+(2p-1)^k\end{bmatrix} - 1 + \frac{1}{2}\begin{bmatrix}1+(2p-1)^k\end{bmatrix} \\
+		& = 1+(2p-1)^k-1 = (2p-1)^k \\
+		\mathbb{E}(X_{t+k}|X_t=-1)& = P(X_{t+k}=1|X_t=-1) - P(X_{t+k}=-1|X_t=-1)\\
+		& = 1-\frac{1}{2}\begin{bmatrix}1+(2p-1)^k\end{bmatrix} - \frac{1}{2}\begin{bmatrix}1+(2p-1)^k\end{bmatrix} \\
+		& = 1-1-(2p-1)^k = -(2p-1)^k
+	\end{split}
+	\end{equation}
+	
+	\item Since conditioning on $X_{t-k-1}$ results in a smaller set than conditioning on $X_{t-k}$, by Law of Iterated Expectations we know that $\mathbb{E}\begin{bmatrix}\mathbb{E}(X_t|X_{t-k})|X_{t-k-1}\end{bmatrix} = \mathbb{E}(X_t|X_{t-k-1})$. From 3.d) we know that $\mathbb{E}(X_t|X_{t-k-1})=\begin{cases}(2p-1)^{k+1}\text{ if }X_{t-k-1}=1 \\ -(2p-1)^{k+1}\text{ if }X_{t-k-1}=-1 \end{cases}$ \\
+	Now, rewrite $\mathbb{E}\begin{Bmatrix}\begin{bmatrix}\mathbb{E}(X_t|X_{t-k})-\mathbb{E}(X_t|X_{t-k-1})\end{bmatrix}^2\end{Bmatrix}$ as
+	\begin{equation}
+		\mathbb{E}\begin{Bmatrix}
+		\begin{bmatrix}\mathbb{E}(X_t|X_{t-k})\end{bmatrix}^2\end{Bmatrix} - 2\mathbb{E}\begin{Bmatrix}\mathbb{E}(X_t|X_{t-k})\mathbb{E}(X_t|X_{t-k-1})\end{Bmatrix} + \mathbb{E}\begin{Bmatrix}\begin{bmatrix}\mathbb{E}(X_t|X_{t-k-1})\end{bmatrix}^2\end{Bmatrix} \\ \nonumber
+	\end{equation}
+	Notice that each component could be computed as:
+	\begin{equation}
+		\begin{split}
+			\mathbb{E}\begin{Bmatrix}\begin{bmatrix}\mathbb{E}(X_t|X_{t-k})\end{bmatrix}^2\end{Bmatrix}& = \begin{bmatrix}\mathbb{E}(X_t|X_{t-k}=1)\end{bmatrix}^2 P(X_{t-k}=1) + \begin{bmatrix}\mathbb{E}(X_t|X_{t-k}=-1)\end{bmatrix}^2 P(X_{t-k}=-1) \\ \nonumber
+			& = ((2p-1)^k)^2\frac{1}{2}+ (-(2p-1)^k)^2\frac{1}{2} = (2p-1)^{2k} \\
+			\mathbb{E}\begin{Bmatrix}\begin{bmatrix}\mathbb{E}(X_t|X_{t-k-1})\end{bmatrix}^2\end{Bmatrix}& = \begin{bmatrix}\mathbb{E}(X_t|X_{t-k-1}=1)\end{bmatrix}^2 P(X_{t-k-1}=1) + \begin{bmatrix}\mathbb{E}(X_t|X_{t-k-1}=-1)\end{bmatrix}^2 P(X_{t-k-1}=-1) \\
+			& = ((2p-1)^{k+1})^2\frac{1}{2}+ (-(2p-1)^{k+1})^2\frac{1}{2} = (2p-1)^{2(k+1)} \\
+			\mathbb{E}\begin{Bmatrix}\mathbb{E}(X_t|X_{t-k})\mathbb{E}(X_t|X_{t-k-1})\end{Bmatrix}& \stackrel{L.I.E.}{=} \mathbb{E}\begin{Bmatrix}\mathbb{E}\begin{bmatrix}\mathbb{E}(X_t|X_{t-k})\mathbb{E}(X_t|X_{t-k-1})|X_{t-k-1}\end{bmatrix}\end{Bmatrix} \\
+			& = \mathbb{E}\begin{Bmatrix}\mathbb{E}\begin{bmatrix}\mathbb{E}(X_t|X_{t-k})|X_{t-k-1}\end{bmatrix}\mathbb{E}(X_t|X_{t-k-1})\end{Bmatrix} \\
+			& = \mathbb{E}\begin{Bmatrix}\begin{bmatrix}\mathbb{E}(X_t|X_{t-k-1})\end{bmatrix}^2\end{Bmatrix} = (2p-1)^{2(k+1)}\\
+		\end{split}
+	\end{equation}
+	Hence, \begin{equation}
+	\begin{split}
+		\mathbb{E}\begin{Bmatrix}
+		\begin{bmatrix}\mathbb{E}(X_t|X_{t-k})-\mathbb{E}(X_t|X_{t-k-1})\end{bmatrix}^2\end{Bmatrix}& = (2p-1)^{2k} - 2(2p-1)^{2(k+1)} + (2p-1)^{2(k+1)} \\ \nonumber
+		& = (2p-1)^{2k}(1-(2p-1)^2) = (2p-1)^{2k}(1-4p^2+4p-1) \\
+		& = 4p(1-p)(2p-1)^{2k}
+	\end{split}
+	\end{equation}
+	
+	\item Compute covariances
+	\begin{equation}
+		\begin{split}
+		Cov(X_t, X_{t-k})& = \mathbb{E}(X_t X_{t-k})-\cancelto{0}{\mathbb{E}(X_t)}\cancelto{0}{\mathbb{E}(X_{t-k})} \\ \nonumber
+		& = \mathbb{E}(X_t|X_{t-k}=1)P(X_{t-k}=1)-\mathbb{E}(X_t|X_{t-k}=-1)P(X_{t-k}=-1) \\
+		& = (2p-1)^k\frac{1}{2}+(2p-1)^k\frac{1}{2} = (2p-1)^k
+		\end{split}
+	\end{equation}
+	
+	\item Given the assumption that $\{X_t\}$ is stationary and ergodic we can try to apply a general CLT to the time process. Notice that $\mathbb{E}(X_t|X_{t-1}=1)=(2p-1)^k\overset{p}{\longrightarrow}0=\mathbb{E}(X_t)\text{ as } k\to\infty$ because $\mid2p-1\mid\in(0,1)$. Next, using the result above we can show that $\sum_{k=0}^{\infty}\sqrt{\mathbb{E}(r_{t, t-k}^{2})} = \sum_{k=0}^{\infty}\sqrt{\mathbb{E}\begin{Bmatrix}\begin{bmatrix}\mathbb{E}(X_t|X_{t-k})-\mathbb{E}(X_t|X_{t-k-1})\end{bmatrix}^2\end{Bmatrix}} = \sum_{k=0}^{\infty}\sqrt{4p(1-p)(2p-1)^{2k}}$. Since $\mid2p-1\mid\in(0,1)$, then as $k\to\infty$ the infinite sum converges, hence is finite. Therefore, we can apply CLT to conclude that 
+	\begin{equation}
+		\frac{1}{\sqrt{n}}\sum_{t=1}^{n}(X_t-0)\overset{d}{\Longrightarrow}\mathcal{N}\begin{pmatrix}0, \sum\limits_{k=-\infty}^{\infty}Cov(X_t, X_{t-k})\end{pmatrix} \sim \mathcal{N}\begin{pmatrix}0, \sum\limits_{k=-\infty}^{\infty}(2p-1)^k\end{pmatrix}\nonumber
+	\end{equation}
+	
+	\item It is easy to show that as long as the condition $P(X_t=1)=P(X_{t+k}=1), \forall k\geq1$ is met, the process is covariance stationary. Notice also that since ${X_t}$ is a process such that conditional probabilities are time invariant, conditional expectations are also time ivariant.
+	\begin{equation}
+		\begin{split}
+		\mathbb{E}(X_t)& = P(X_t=1)-P(X_t=-1) = 2P(X_t=1) - 1 = 2P(X_{t+k}=1) - 1=\mathbb{E}(X_{t+k}), \forall k\geq1\\ \nonumber
+		Var(X_t)& = \cancelto{1}{P(X_t=1)+P(X_t=-1)}-(2P(X_t=1) - 1)^2\\
+		& = 1-(2P(X_{t+k}=1) - 1)^2 = Var(X_{t+k}), \forall k\geq1 \\
+		Cov(X_t, X_{t+k})& = \mathbb{E}(X_tX_{t+k})-\mathbb{E}(X_t)\mathbb{E}(X_{t+k})\\
+		& =  \mathbb{E}(X_{t+k}|X_t=1)P(X_t=1)-\mathbb{E}(X_{t+k}|X_t=-1)P(X_t=-1)-(2P(X_t=1)-1)^2 \\ \text{only depends on lag length.}
+		\end{split}
+	\end{equation}
+	
+	 \item The statement is false. Take, for example, $p=q=1$ and $P(X_t=1)=\frac{1}{2}$. In this case, $P(X_{t+k}=1|X_t=1)=1$, $P(X_{t+k}=-1|X_t=1)=0$, $P(X_{t+k}=1|X_t=-1)=0$, and  $P(X_{t+k}=-1|X_t=-1)=1$, $\forall k\geq1$. Then,
+	 \begin{equation}
+	 	\begin{split}
+	 	\lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{t=1}^{n}\Pr(X_1\leq-1, X_{t+q+1}\leq-1)& = \lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{t=1}^{n}\Pr(X_{t+q+1}\leq-1|X_1\leq-1)\Pr(X_1\leq-1) \\ \nonumber
+	 	& = \lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{t=1}^{n}\Pr(X_1\leq-1)\\
+	 	& = \Pr(X_1\leq-1) = \frac{1}{2} \neq \frac{1}{4} = \Pr(X_1\leq-1)\Pr(X_{t+q+1}\leq-1)
+	 	\end{split}
+	 \end{equation}
+	 Thus, the process is not ergodic for all $(p,q)$.
+	 
+	 \item Expressing $\{X_t\}$ as a Markov chain is equivalent to finding the associated transition matrix, $P$:
+	 \begin{equation}
+	 	P=\begin{bmatrix}
+	 	p & 1-p \\ 1-q & q
+	 	\end{bmatrix} \nonumber
+	 \end{equation}
+	 To calculate the eigenvalues, solve $det(P-\lambda I)=0$ for $\lambda$:
+	 \begin{equation}
+	 	\begin{split}
+	 	det(\begin{bmatrix}
+	 	p-\lambda & 1-p \\ 1-q & q-\lambda
+	 	\end{bmatrix})& = (p-\lambda)(q-\lambda)-(1-p)(1-q) = 0 \\ \nonumber
+	 	\cancel{pq}-\lambda(p+q)+\lambda^2-1+p+q-\cancel{pq} & = \lambda^2 -\lambda(p+q) - (1-p-q) = 0 \\
+	 	\lambda & = \frac{p+q\pm\sqrt{(p+q)^2+4-4(p+q)}}{2} \\
+	 	& = \frac{p+q\pm\sqrt{(p+q-2)^2}}{2} \\
+	 	& = \frac{p+q\pm(p+q-2)^2}{2} \\
+	 	& = \begin{pmatrix}
+	 	p+q-1 , 1
+	 	\end{pmatrix}
+	 	\end{split}
+	 \end{equation}
+	 To find the associated eigenvectors, solve $(P-\lambda_iI)v_i=0$ for $v_i$. First, for $\lambda_1=1$:
+	 \begin{equation}
+	 	\begin{split}
+	 	\begin{bmatrix}
+	 	p-1 & 1-p \\ 1-q & q-1
+	 	\end{bmatrix}\begin{bmatrix}
+	 	v_1^1 \\ v_2^1
+	 	\end{bmatrix} = 0 \\ \nonumber	
+	 	\begin{cases}
+	 	(p-1)v_1^1 + (1-p)v_2^1 = 0 \\ (1-q)v_1^1+(q-1)v_2^1 = 0
+	 	\end{cases} \Rightarrow
+	 	\begin{cases}
+	 	(1-p)(v_2^1-v_1^1)=0 \\ (1-q)(v_1^1 - v_2^1) = 0
+	 	\end{cases} \Rightarrow \begin{cases}
+	 	v_2^1 = v_1^1 \\ v_1^1 = v_2^1
+	 	\end{cases} \Rightarrow v^1 = a\begin{bmatrix}
+	 	1 \\ 1
+	 	\end{bmatrix}, a\in\mathbb{R}
+	 	\end{split}
+	 \end{equation}
+	 Similarly, for $\lambda_1=p+q-1$:
+	 \begin{equation}
+	 \begin{split}
+	 	\begin{bmatrix}
+	 		p+1-p-q & 1-p \\ 1-q & q+1-p-q
+	 	\end{bmatrix}\begin{bmatrix}
+	 		v_1^2 \\ v_2^2
+	 	\end{bmatrix} = 0 \Rightarrow \begin{bmatrix}
+	 	1-q & 1-p \\ 1-q & 1-p
+	 	\end{bmatrix}\begin{bmatrix}
+	 	v_1^2 \\ v_2^2	 	\end{bmatrix} = 0\\ \nonumber	
+	 	\begin{cases}
+	 		(1-q)v_1^2 + (1-p)v_2^2 = 0 \\ (1-q)v_1^2+(1-p)v_2^2 = 0
+	 	\end{cases} \Rightarrow
+	 	\begin{cases}
+	 		(1-p)(v_2^2-v_1^2)=0 \\ (1-q)(v_1^2 - v_2^2) = 0
+	 	\end{cases} \Rightarrow \begin{cases}
+	 		v_1^2 = -\frac{(1-p)v_2^2}{1-q} \\ v_1^2 = -\frac{(1-p)v_2^2}{1-q}
+	 	\end{cases} \Rightarrow v^2 = b\begin{bmatrix}
+	 		\frac{1-p}{1-q} \\ 1
+	 	\end{bmatrix}, b\in\mathbb{R}
+	 \end{split}
+	 \end{equation}
+	 Thus, the associated eigenvectors are $a(1, 1), a\in\mathbb{R}$ and $b(\frac{1-p}{1-q}, 1), b\in\mathbb{R}$.
+\end{enumerate}
+
+\end{document}

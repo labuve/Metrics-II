@@ -1,0 +1,217 @@
+\documentclass[]{article}
+\usepackage{amsmath, amsfonts}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{cancel}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{dcolumn}
+
+%opening
+\title{Problem Set II \\ \large Econometrics II}
+\author{Nurfatima Jandarova}
+\date{\today}
+\pagestyle{fancy}
+
+\lhead{Econometrics II, Problem Set II}
+\rhead{Nurfatima Jandarova}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyheadoffset{1 cm}
+
+\geometry{a4paper, left=30mm, top=30mm, bottom = 20mm, headheight=20mm}
+
+\sloppy
+\definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Exercise 2}
+\begin{enumerate}[label=\alph*)]
+	\item Given an ARMA(1,1) model $X_t = \mu + \phi_1 X_{t-1} + \epsilon_t - \theta_1\epsilon_{t-1}, \text{ where }\epsilon_t \sim iid(0, \sigma^2_\epsilon) \text{ and } \mid\phi_1\mid<1$.
+	Under these conditions, the process is covariance stationary. Therefore, the mean, variance and autocovariances of the process could be computed as follows:
+	\begin{equation}
+		\begin{split}
+		\mathbb{E}(X_{t})& = \mu + \phi_1\mathbb{E}(X_{t-1}) + \cancelto{0}{\mathbb{E}(\epsilon_t)} - \theta_1\cancelto{0}{\mathbb{E}(\epsilon_{t-1})} \Longrightarrow \\ \nonumber
+		\mathbb{E}(X_{t})& = \frac{\mu}{1-\phi_1}\\
+		\gamma_0& = Var(X_t) = Var(\mu + \phi_1 X_{t-1} + \epsilon_t - \theta_1\epsilon_{t-1}) \\
+		& = \phi_1^2Var(X_{t-1}) + \sigma^2_\epsilon + \theta_1^2\sigma^2_\epsilon + 2\cancelto{0}{Cov(\phi_1 X_{t-1},\epsilon_t)} - 2Cov(\phi_1 X_{t-1}, \theta_1\epsilon_{t-1}) - 2\cancelto{0}{Cov(\epsilon_t, \epsilon_{t-1})} \\
+		& = \phi_1^2Var(X_{t-1}) + \sigma^2_\epsilon + \theta_1^2\sigma^2_\epsilon - 2\phi_1\theta_1 Cov(\mu + \phi_1 X_{t-2} + \epsilon_{t-1} - \theta_1\epsilon_{t-2},\epsilon_{t-1}) \\
+		& = \phi_1^2\gamma_0 + \sigma^2_\epsilon + \theta_1^2\sigma^2_\epsilon - 2\phi_1\theta_1\sigma^2_\epsilon \Longrightarrow \\
+		\gamma_0& = \frac{\sigma^2_\epsilon(1 + \theta_1^2 - 2\phi_1\theta_1)}{1-\phi_1^2} \\
+		\gamma_1& = Cov(X_t, X_{t-1}) = Cov(\mu + \phi_1 X_{t-1} + \epsilon_t - \theta_1\epsilon_{t-1}, X_{t-1}) \\
+		& = \phi_1\gamma_0 - \theta_1 Cov(\epsilon_{t-1}, \mu + \phi_1 X_{t-2} + \epsilon_{t-1} - \theta_1\epsilon_{t-2}) \\
+		& = \phi_1\gamma_0 - \theta_1 \sigma^2_\epsilon = \frac{\phi_1\sigma^2_\epsilon(1 + \theta_1^2 - 2\phi_1\theta_1)}{1-\phi_1^2} - \theta_1 \sigma^2_\epsilon = \sigma^2_\epsilon\begin{pmatrix}
+		\frac{\phi_1(1 + \theta_1^2 - 2\phi_1\theta_1)}{1-\phi_1^2} - \theta_1
+		\end{pmatrix} \\
+		& = \sigma^2_\epsilon\frac{\phi_1 + \phi_1\theta_1^2 - \phi_1^2\theta_1 - \theta_1}{1-\phi_1^2} = \sigma^2_\epsilon\frac{(\phi_1 - \theta_1)(1-\phi_1\theta_1)}{1-\phi_1^2} \\
+		\gamma_2& = Cov(X_t, X_{t-2}) = Cov(\mu + \phi_1 X_{t-1} + \epsilon_t - \theta_1\epsilon_{t-1}, X_{t-2}) = \phi_1\gamma_1 = \phi_1\sigma^2_\epsilon\frac{(\phi_1 - \theta_1)(1-\phi_1\theta_1)}{1-\phi_1^2} \\
+		\text{Simil}&\text{arly, }\forall k\geq 2 \\
+		\gamma_k& = \phi_1\gamma_{k-1} = \phi_1^{k-1}\gamma_1 = \phi_1^{k-1}\sigma^2_\epsilon\frac{(\phi_1 - \theta_1)(1-\phi_1\theta_1)}{1-\phi_1^2} \\
+		\text{Hence, }& \\
+		\sum\limits_{h = -\infty}^{\infty}\gamma_h& = \gamma_0 + 2\gamma_1 + 2\sum\limits_{h = 2}^{\infty}\gamma_h = \gamma_0 + 2\gamma_1 + 2\gamma_1\sum\limits_{h = 2}^{\infty}\phi_1^{h-1} = \gamma_0 + 2\gamma_1 + 2\gamma_1\frac{\phi_1}{1-\phi_1} \\
+		& = \gamma_0 + \frac{2\gamma_1}{1-\phi_1} = \frac{\sigma^2_\epsilon(1 + \theta_1^2 - 2\phi_1\theta_1)}{1-\phi_1^2} + \frac{2\sigma^2_\epsilon}{1-\phi_1}\frac{(\phi_1 - \theta_1)(1-\phi_1\theta_1)}{1-\phi_1^2} \\
+		& = \frac{\sigma^2_\epsilon}{1-\phi_1^2}\frac{(1+\phi_1)(1-\theta_1)^2}{1-\phi_1} = \sigma^2_\epsilon\begin{pmatrix}\frac{1-\theta_1}{1-\phi_1}\end{pmatrix}^2
+		\end{split}
+	\end{equation}
+	\item From the result above, it is easy to see that when $\theta_1\neq1$, the long-run variance is non-zero and when $\phi_1\neq1$, the long-run variance is finite.
+\end{enumerate}
+
+\pagebreak
+\subsection*{Exercise 3}
+In this exercise, I also assume that $\mathbb{E}(\eta_t) = 0$.
+\begin{enumerate}[label=\alph*)]
+	\item Substitute the model for $Y_t$ into the expression for $X_t$:
+	\begin{equation}
+		\begin{split}
+		X_t& = \varphi Y_{t-1} + \mu + \epsilon_t + \eta_t \\ \nonumber
+		& = \varphi (X_{t-1}-\eta_{t-1}) + \mu + \epsilon_t + \eta_t \\
+		& = \varphi X_{t-1} + \mu + \epsilon_t + \eta_t - \varphi\eta_{t-1} 
+		\end{split}
+	\end{equation}
+	Now, I claim that $Z_t = \epsilon_t + \eta_t - \varphi\eta_{t-1}$ is an MA(1) process. First of all, observe that
+	\begin{equation}
+		\begin{split}
+		\mathbb{E}(Z_t)& = 0 \\ \nonumber
+		\mathbb{E}(Z_tZ_{t-j})& = \begin{cases}
+		\sigma_\epsilon^2 + (1+\varphi^2)\sigma_\eta^2\text{ for }&j = 0\\
+		-\varphi\sigma_\eta^2 \text{ for }&j = \pm 1\\
+		0 &\text{ otherwise}\\
+		\end{cases}
+		\end{split}
+	\end{equation}
+	Want to show that it is possible to find $\theta$ such that $Z_t = \nu_t - \theta\nu_{t-1}$, where
+		\begin{equation}
+	\begin{split}
+	\mathbb{E}(Z_t)& = 0 \\ \nonumber
+	\mathbb{E}(Z_tZ_{t-j})& = \begin{cases}
+	(1+\theta^2)\sigma_\nu^2\text{ for }&j = 0\\
+	-\theta\sigma_\nu^2 \text{ for }&j = \pm 1\\
+	0 &\text{ otherwise}\\
+	\end{cases}
+	\end{split}
+	\end{equation}
+	For the first-order autocovariances to be equivalent we need the following
+	\begin{equation}
+		\begin{split}
+		-\theta\sigma_\nu^2& = -\varphi\sigma_\eta^2 \\ \nonumber
+		\sigma_\nu^2& = \frac{\varphi}{\theta}\sigma_\eta^2
+		\end{split}
+	\end{equation}
+	Substitute this into equivalence condition for variances:
+	\begin{equation}
+		\begin{split}
+		\sigma_\epsilon^2 + (1+\varphi^2)\sigma_\eta^2& = (1+\theta^2)\sigma_\nu^2 \\ \nonumber
+		\sigma_\epsilon^2 + (1+\varphi^2)\sigma_\eta^2& = (1+\theta^2)\frac{\varphi}{\theta}\sigma_\eta^2 \\
+		\theta^2 \varphi + \theta\begin{pmatrix}
+		\frac{\sigma_\epsilon^2}{\sigma_\eta^2} + 1 + \varphi^2
+		\end{pmatrix} + \varphi& = 0 \\
+		\theta& = \frac{-\begin{pmatrix}
+			\frac{\sigma_\epsilon^2}{\sigma_\eta^2} + 1 + \varphi^2
+			\end{pmatrix} \pm \sqrt{\begin{pmatrix}
+				\frac{\sigma_\epsilon^2}{\sigma_\eta^2} + 1 + \varphi^2
+				\end{pmatrix}^2 - 4\varphi^2}}{2\varphi}
+		\end{split}
+	\end{equation}
+	For $\theta>0$ and $\sigma_\epsilon^2 > 0$ (from Hamilton) there are two real solutions: one invertible ($0 < \mid\theta\mid < \mid\varphi\mid$), and the other not ($1 < \mid\frac{1}{\varphi}\mid < \mid\theta\mid$). Hence, indeed we can rewrite $Z_t = \nu_t - \theta\nu_{t-1}$, where $\mathbb{E}(\nu_t) = 0$ and $\mathbb{E}(\nu_t^2) = \sigma_\nu^2 = \frac{\varphi}{\theta}\sigma_\eta^2$. Therefore, the process for $X_t$ could be written as ARMA(1, 1)
+	\begin{equation}
+		X_t = \varphi X_{t-1} + \mu + \nu_t - \theta\nu_{t-1} \nonumber
+	\end{equation}
+	
+	\item First, consider the case when $h = 0$.
+	\begin{equation}
+		\hat{\varphi}(0) = \frac{\sum\limits_{t = 0}^{n-1}(X_t - \bar{X}_0)X_{t+1}}{\sum\limits_{t = 0}^{n-1}(X_t - \bar{X}_0)X_t}  \nonumber
+	\end{equation}
+	This is an OLS estimator from the regression model
+	\begin{equation}
+		X_{t+1} = \beta_0 + \varphi(0) X_t + u_t \nonumber
+	\end{equation}
+	For the cases where $h\geq1$, the estimator $\hat{\varphi}(h)$ is an IV estimator with $X_{t-h}$ being an instrument for $X_t$.
+	\begin{equation}
+	\begin{split}
+	X_{t+1} = \beta_0 + \varphi(h) X_t + u_t \\\nonumber
+	X_t = \alpha_0 + \alpha_1 X_{t-h} + v_t
+	\end{split}
+	\end{equation}
+	
+	\item Notice that we could also rewrite the process for $X_t$ as
+	\begin{equation}
+		\begin{split}
+		(1- \varphi L)X_t& = \mu + (1 - \theta L)\nu_t \\ \nonumber
+		X_t& = \frac{\mu}{1- \varphi} + \frac{1 - \theta L}{1- \varphi L}\nu_t \\
+		& = \frac{\mu}{1- \varphi} + \sum\limits_{j = 0}^{\infty}\varphi^j(\nu_{t-j} - \theta\nu_{t-j-1})
+		\end{split}
+	\end{equation}
+	Since $\nu_t$ is a function of iid variables, it is also iid. Notice as well that $Var(\nu_t - \theta\nu_{t-1}) = (1+\theta^2)\sigma_\nu^2$. Hence, the process for $X_t$ could be described as a linear process. Therefore, $X_t$ is covariance-stationary, its autocovariances are $\gamma_h = (1+\theta^2)\sigma_\nu^2\sum\limits_{j = 0}^{\infty}\varphi^j\varphi^{j + h} = (1+\theta^2)\sigma_\nu^2\sum\limits_{j = 0}^{\infty}\varphi^{2j + h} < \infty$; and $\sum\limits_{h = -\infty}^{\infty}\mid\gamma_h\mid < \infty$ since $\mid\varphi\mid < 1$. This also implies that $X_t$ is ergodic. Therefore, we can apply Ergodic Theorem to our estimators.
+	When $h = 0$ we have $\hat{\varphi}(0) = \frac{\frac{1}{n}\sum\limits_{t = 0}^{n-1}X_tX_{t+1} - (\frac{1}{n}\sum\limits_{t = 0}^{n-1}X_t)(\frac{1}{n}\sum\limits_{t = 0}^{n-1}X_{t+1})}{\frac{1}{n}\sum\limits_{t = 0}^{n-1}X_t^2 - (\frac{1}{n}\sum\limits_{t = 0}^{n-1}X_t)^2}$. Then, by applying Ergodic Theorem we know that
+	\begin{equation}
+		\begin{split}
+		\frac{1}{n}\sum\limits_{t = 0}^{n-1}X_tX_{t+1}&\overset{a.s., L_1}{\longrightarrow}\mathbb{E}(X_tX_{t+1}) = \mathbb{E}((Y_t + \eta_t)(Y_{t+1} + \eta_{t+1})) = \mathbb{E}(Y_tY_{t+1}) \\ \nonumber
+		\frac{1}{n}\sum\limits_{t = 0}^{n-1}X_t&\overset{a.s., L_1}{\longrightarrow}\mathbb{E}(X_t) = \mathbb{Y_t} \\
+		\frac{1}{n}\sum\limits_{t = 0}^{n-1}X_{t+1}&\overset{a.s., L_1}{\longrightarrow}\mathbb{E}(X_{t+1}) = \mathbb{E}(Y_{t+1})\\
+		\frac{1}{n}\sum\limits_{t = 0}^{n-1}X_t^2&\overset{a.s., L_1}{\longrightarrow}\mathbb{E}(X_t^2) = \mathbb{E}[(Y_t + \eta_t)^2] = \mathbb{E}(Y_t^2) + \sigma_\eta^2\\
+		\text{by CMT, }\hat{\varphi}(0)&\overset{a.s., L_1}{\longrightarrow}\frac{\mathbb{E}(Y_tY_{t+1}) - \mathbb{E}(Y_t)\mathbb{E}(Y_{t+1})}{\mathbb{E}(Y_t^2) - (\mathbb{E}(Y_t))^2 + \sigma_\eta^2} \neq \varphi
+		\end{split}
+	\end{equation}
+	So, $\hat{\varphi}(0)$ is inconsistent estimator for $\varphi$. However, notice that following similar reasoning for cases when $h\geq1$ we obtain the following:
+	\begin{equation}
+		\begin{split}
+		\hat{\varphi}(h)\overset{a.s., L_1}{\longrightarrow}\frac{\mathbb{E}(X_{t+1}X_{t-h}) - \mathbb{E}(X_{t+1})\mathbb{E}(X_{t-h})}{\mathbb{E}(X_tX_{t-h}) - \mathbb{E}(X_t)\mathbb{E}(X_{t-h})} \overset{(1)}{=} \frac{\varphi^{h+1}\gamma_1}{\varphi^{h}\gamma_1} = \varphi \nonumber
+		\end{split}
+	\end{equation}
+	where $(1)$ follows from Exercise 2. So, $\forall h\geq1, \hat{\varphi}(h)$ is a consistent estimator for $\varphi$.
+	\item I'm sorry, I can't do this one. I find it difficult and too time-consuming to check whether CLT applies to IV estimator or not.
+	
+	\item As seen in part c) of this question, $\hat{\varphi}(0)$ typically has larger denominator than $\hat{\varphi}(h), \forall h\geq1$. This observation is confirmed in the table provided.
+	
+	\item We can use Delta Method here. We have
+	\begin{equation}
+		\sqrt{n}(\hat{\varphi}(h) - \varphi) \overset{d}{\Longrightarrow} \mathcal{N}(0, \Sigma) \nonumber
+	\end{equation}
+	and a function $g(\varphi) = \frac{\ln0.5}{\ln\varphi} \Longrightarrow g'(\varphi) = -\frac{\ln0.5}{(\ln\varphi)^2}\frac{1}{\varphi}$.
+	\begin{equation}
+		\sqrt{(n)}(\hat{\gamma} - \gamma)\overset{d}{\Longrightarrow}\mathcal{N}(0, \Sigma\begin{bmatrix}
+			-\frac{\ln0.5}{(\ln\varphi)^2}\frac{1}{\varphi}
+			\end{bmatrix}^2) \nonumber
+	\end{equation}
+\end{enumerate}
+
+\pagebreak
+\subsection*{Exercise 4}
+\begin{table}[!htbp] \centering 
+	\caption{Regression results} 
+	\label{} 
+	\begin{tabular}{@{\extracolsep{5pt}}lD{.}{.}{-3} } 
+		\\[-1.8ex]\hline 
+		\hline \\[-1.8ex]
+		\\[-1.8ex] & \multicolumn{1}{c}{$CPI$} \\ 
+		\hline \\[-1.8ex] 
+		$CPI_{t-1}$ & 1.2216 \\ 
+		& (0.1238) \\ 
+		& \\ 
+		$CPI_{t-2}$ & -0.3934 \\ 
+		& (0.1243) \\ 
+		& \\ 
+		intercept & 0.6647 \\ 
+		& (0.2760) \\ 
+		& \\ 
+		\hline \\[-1.8ex] 
+		Observations & \multicolumn{1}{c}{55} \\ 
+		$\sigma^{2}$ & \multicolumn{1}{c}{1.168} \\ 
+		\hline 
+		\hline \\[-1.8ex] 
+	\end{tabular} 
+\end{table} 
+
+In order to compute the roots of the estimated characteristic polynomial has to solve 
+\begin{equation}
+	\begin{split}
+	&1-1.2216z + 0.3934z^2 = 0 \\ \nonumber
+	&z = \frac{3054 \pm 2\sqrt{127021}i}{1967} \approx 1.5526 \pm 0.3624i\\
+	\end{split}
+\end{equation}
+Recall that during the lecture we derived that one of the conditions for AR(2) process to be stationary is that $\mid\phi_2\mid < 1$. From the above we see that the condition is satisfied, hence the process is stationary.
+\end{document}
