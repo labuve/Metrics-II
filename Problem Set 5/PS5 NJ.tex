@@ -1,0 +1,268 @@
+\documentclass[]{article}
+\usepackage{amsmath, amsfonts}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{cancel}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{dcolumn}
+\usepackage{mathtools}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{cleveref}
+\usepackage{titlesec}
+
+%opening
+\title{Problem Set V \\ \large Econometrics II}
+\author{Nurfatima Jandarova}
+\date{\today}
+\pagestyle{fancy}
+
+\lhead{Econometrics II, Problem Set V}
+\rhead{Nurfatima Jandarova}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyheadoffset{1 cm}
+
+\geometry{a4paper, left=30mm, top=30mm, bottom = 20mm, headheight=20mm}
+
+\sloppy
+\definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\renewcommand{\thesubsubsection}{\textbf{(\alph{subsubsection})}}
+\titleformat{\subsubsection}[runin]
+{\normalfont\normalsize}{\thesubsubsection}{1em}{}
+
+% Square brackets
+\DeclareMathOperator{\rank}{rank}
+\makeatletter
+\newenvironment{sqcases}{%
+	\matrix@check\sqcases\env@sqcases
+}{%
+	\endarray\right.%
+}
+\def\env@sqcases{%
+	\let\@ifnextchar\new@ifnextchar
+	\left\lbrack
+	\def\arraystretch{1.2}%
+	\array{@{}l@{\quad}l@{}}%
+}
+\makeatother
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Exercise 1}
+
+\subsubsection{}
+\label{subsub: 1a}
+The model could be rewritten as
+\begin{equation}
+	\underbrace{\begin{pmatrix}
+		\Delta X_{1t} \\ \Delta X_{2t}
+	\end{pmatrix}}_{\Delta X_t} = \underbrace{\begin{pmatrix}
+		\alpha_1 & -\alpha_1\beta_2 \\ 0 & 0
+	\end{pmatrix}}_{\Pi}\underbrace{\begin{pmatrix}
+		X_{1t-1} \\ X_{2t-1}
+	\end{pmatrix}}_{X_{t-1}} + \underbrace{\begin{pmatrix}
+		\mu_1 \\ \mu_2
+	\end{pmatrix}}_\mu + \underbrace{\begin{pmatrix}
+		\varepsilon_{1t} \\ \varepsilon_{2t}
+	\end{pmatrix}}_{\varepsilon_t}\nonumber
+\end{equation}
+Hence, also $\Gamma_k = 0, \forall k \geq 1$. The matrix $\Pi$ could be decomposed as:
+\begin{equation}
+	\begin{split}
+		\underbrace{\begin{pmatrix}
+			\alpha_1 \\ 0
+		\end{pmatrix}}_\alpha\underbrace{\begin{pmatrix}
+			1 & -\beta_2
+		\end{pmatrix}}_{\beta'} = \begin{pmatrix}
+		\alpha_1 & -\alpha_1\beta_2 \\ 0 & 0
+		\end{pmatrix} \nonumber
+	\end{split}
+\end{equation}
+Notice that
+\begin{equation}
+	\begin{split}
+		&\det(\alpha'\alpha) = \alpha_1^2 \neq 0 \text{ if } \alpha_1 \neq 0 \\ \nonumber
+		&\det(\beta'\beta) = 1 + \beta_2^2 > 0
+		\intertext{Thus, we can define $\alpha_{\perp}$ and $\beta_{\perp}$ such that}
+		&\begin{cases}
+			\alpha_{\perp}'\alpha = 0 \\
+			\beta_{\perp}'\beta = 0
+		\end{cases}\begin{cases}
+			\begin{pmatrix}
+				\alpha_{1\perp} & \alpha_{2\perp}
+			\end{pmatrix}\begin{pmatrix}
+				\alpha_1 \\ 0
+			\end{pmatrix} = 0 \\
+			\begin{pmatrix}
+				\beta_{1\perp} & \beta_{2\perp}
+			\end{pmatrix}\begin{pmatrix}
+				1 \\ -\beta_2
+			\end{pmatrix} = 0
+		\end{cases} \Rightarrow \alpha_{\perp} = \begin{pmatrix}
+			0 \\ \alpha_{2\perp}
+		\end{pmatrix}, \alpha_{2\perp}\in\mathbb{R}/\{0\}; \qquad \beta_{\perp} = \begin{pmatrix}
+			\beta_2 \\ 1
+		\end{pmatrix}
+	\end{split}
+\end{equation}
+Therefore, using Granger Representation we can define $C$ as
+\begin{equation}
+	C = \beta_{\perp}(\alpha_{\perp}'\beta_{\perp})^{-1}\alpha_{\perp}' = \begin{pmatrix}
+		\beta_2 \\ 1
+	\end{pmatrix}\left[\begin{pmatrix}
+		0 & \alpha_{2\perp}
+	\end{pmatrix}\begin{pmatrix}
+		\beta_2 \\ 1
+	\end{pmatrix}\right]^{-1}\begin{pmatrix}
+		0 & \alpha_{2\perp}
+	\end{pmatrix} = \frac{1}{\alpha_{2\perp}}\begin{pmatrix}
+		0 & \beta_2\alpha_{2\perp} \\ 0 & \alpha_{2\perp}
+	\end{pmatrix} = \begin{pmatrix}
+		0 & \beta_2 \\ 0 & 1
+	\end{pmatrix}\nonumber
+\end{equation}
+
+\subsubsection{}
+\label{subsub: 1b}
+In \cref{subsub: 1a}, we saw that the process could be written in vector notation, which could further be rearranged as
+\begin{equation}
+	\begin{split}
+		\Delta X_t& = \Pi X_{t-1} + \mu + \varepsilon_t \nonumber \\
+		\underbrace{\left[(1 - L)I - \Pi L\right]}_{\Phi(L)}X_t& = \mu + \varepsilon_t
+		\intertext{Hence, the root of characteristic polynomial could be found by solving}
+		\det\left(\begin{pmatrix}
+			1 - z & 0 \\ 0 & 1 - z
+		\end{pmatrix} - \begin{pmatrix}
+		\alpha_1z & -\alpha_1\beta_2z \\ 0 & 0
+		\end{pmatrix}\right)& = 0 \Rightarrow (1 - (1 + \alpha_1)z)(1 - z) = 0 \Rightarrow
+		\begin{sqcases}
+			z& = 1 \\
+			z& = \frac{1}{1 + \alpha_1}
+		\end{sqcases}
+	\end{split}
+\end{equation}
+Hence, if $\mid\frac{1}{1 + \alpha_1}\mid < 1 \Rightarrow \alpha_1 \in(-\infty, -2)\cup(0, \infty)$, the process for $X_t$ is explosive; in all other cases when $\alpha_1 \in [-2, 0]$, $X_t$ is I(1) process. Notice that $\beta_2$ has no effect on stationarity/nonstationarity of $X_t$; however, if $\beta_2 = 0$, there is no cointegrating relationship between $X_{1t}$ and $X_{2t}$.
+
+\subsubsection{}
+Recall from \cref{subsub: 1b} that the process for $X_t$ could be written with lag operator as
+\begin{equation}
+	\begin{split}
+		(1 - L)IX_t - \Pi L X_t& = \mu + \varepsilon_t \Rightarrow (1 - L)\beta'X_t - \beta'\alpha\beta' L X_t = \beta'(\mu + \varepsilon_t) \\ \nonumber
+		\left[(1 - L) - \beta'\alpha L\right]\beta'X_t& = \beta'(\mu + \varepsilon_t)
+		\intertext{Check the roots of the characteristic polynomial}
+		1 - z - \alpha_1z = 0 \Rightarrow z = \frac{1}{1 + \alpha_1}
+	\end{split}
+\end{equation}
+So, for the process $\beta'X_t$ to be stationary, we need $|z| > 1$:
+\begin{equation}
+	\begin{split}
+		\begin{cases}
+			\frac{1}{1 + \alpha_1} > 1 &\text{ if }1 + \alpha_1 > 0 \\
+			\frac{1}{1 + \alpha_1} < -1 &\text{ if }1 + \alpha_1 < 0
+		\end{cases}\Rightarrow \begin{cases}
+			\alpha_1 < 0 \\
+			\alpha_1 > -2
+		\end{cases}\nonumber
+	\end{split}
+\end{equation}
+
+\subsubsection{}
+Given the Granger representation given in the problem, there is no linear trend in $X_t$ if $C\mu = 0$:
+\begin{equation}
+	\begin{split}
+		\begin{pmatrix}
+			0 & \beta_2 \\ 0 & 1
+		\end{pmatrix}\begin{pmatrix}
+			\mu_1 \\ \mu_2
+		\end{pmatrix}& = 0 \Rightarrow \begin{pmatrix}
+			\beta_2\mu_2 \\ \mu_2
+		\end{pmatrix} = \begin{pmatrix}
+			0 \\ 0
+		\end{pmatrix} \nonumber
+	\end{split}
+\end{equation}
+That is, the linear trend disappears if the process for $X_{2t}$ is mean-zero: $\mu_2 = 0$. 
+
+\subsection*{Exercise 2}
+
+\subsubsection{}
+Rewrite equations (3) and (4) as
+\begin{equation}
+	\begin{split}
+		\begin{cases}
+			\mathbb{E}_t\left(\text{exch}_{t+1} - \text{exch}_{t} - i_t^{us} + i_t^{au}\right) = 0 \\ \nonumber
+			\mathbb{E}_t\left(p_{t + 1}^{us} - p_t^{us} - p_{t + 1}^{au} + p_t^{au} + i_t^{au} - i_t^{us}\right) = 0
+		\end{cases}
+	\end{split}
+\end{equation}
+The expression inside the expectations could be written in vector notation:
+\begin{equation}
+	\begin{split}
+		\underbrace{\begin{pmatrix}
+			1 & -1 & -1 & 0 & 0 \\
+			1 & -1 & 0 & -1 & 1
+		\end{pmatrix}}_{c_0'}\begin{pmatrix}
+			i_t^{au} \\ i_t^{us} \\ \text{exch}_t \\ p_t^{us} \\ p_t^{au}
+		\end{pmatrix} + \underbrace{\begin{pmatrix}
+			0 & 0 & 1 & 0 & 0 \\
+			0 & 0 & 0 & 1 & -1
+		\end{pmatrix}}_{c_1'}\begin{pmatrix}
+			i_{t + 1}^{au} \\ i_{t + 1}^{us} \\ \text{exch}_{t + 1} \\ p_{t + 1}^{us} \\ p_{t + 1}^{au}
+		\end{pmatrix} = \begin{pmatrix}
+			i_t^{au} - i_t^{us} - \text{exch}_t + \text{exch}_{t + 1} \\
+			i_t^{au} - i_t^{us} - p_t^{us} + p_t^{au} + p_{t + 1}^{us} - p_{t + 1}^{au}
+		\end{pmatrix} \nonumber
+	\end{split}
+\end{equation}
+Hence, indeed (3) and (4) are a special case of (2) with 
+\begin{equation}
+	c_0 = \begin{pmatrix}
+		1 & 1 \\
+		-1 & -1 \\
+		-1 & 0 \\
+		0 & -1 \\
+		0 & 1
+	\end{pmatrix}, \qquad c_1 = \begin{pmatrix}
+		0 & 0 \\
+		0 & 0 \\
+		1 & 0 \\
+		0 & 1 \\
+		0 & -1
+	\end{pmatrix}, \qquad c = \begin{pmatrix}
+		0 \\ 0
+	\end{pmatrix} \nonumber
+\end{equation}
+
+\subsubsection{}
+Rewrite the rational expectations restriction
+\begin{equation}
+	\begin{split}
+		\mathbb{E}_t\left(c_0'X_t + c_1'X_{t+1}\right)& = c \\ \nonumber
+		c_0'X_t + c_1'\mathbb{E}_t\left(X_{t+1}\right)& = c
+		\intertext{Substitute (1)}
+		c_0'X_t + c_1'\mathbb{E}_t\left((I + \Pi)X_t + \mu + \varepsilon_{t+1}\right)& = c \\
+		(c_0' + c_1' + c_1'\Pi)X_t + c_1'\mu + c_1'\cancelto{0}{\mathbb{E}_t(\varepsilon_{t+1})}& = c
+	\end{split}
+\end{equation}
+
+For the above equality to hold we need $X_t$ to be pre-multiplied by a zero matrix. Hence,
+\begin{equation}
+	\begin{split}
+		c_0' + c_1' + c_1'\Pi& = 0 \\ \nonumber
+		c_1'\Pi& = -(c_0' + c_1') = -(c_0 + c_1)'
+	\end{split}
+\end{equation}
+Then, we are left with condition
+\begin{equation}
+	c_1'\mu = c \nonumber
+\end{equation}
+\end{document}
